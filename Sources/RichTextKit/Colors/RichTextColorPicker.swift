@@ -53,9 +53,6 @@ public struct RichTextColorPicker: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @Environment(\.colorScheme)
-    private var colorScheme
-
     public var body: some View {
         HStack(spacing: 0) {
             iconView
