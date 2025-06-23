@@ -3,7 +3,7 @@
 //  RichTextKit
 //
 //  Created by Daniel Saidi on 2022-05-31.
-//  Copyright © 2022-2023 Daniel Saidi. All rights reserved.
+//  Copyright © 2022-2024 Daniel Saidi. All rights reserved.
 //
 
 import Foundation
@@ -33,7 +33,7 @@ public extension PasteboardImageReader {
     }
 }
 
-#if iOS
+#if iOS || os(visionOS)
 import UIKit
 
 extension UIPasteboard: PasteboardImageReader {}

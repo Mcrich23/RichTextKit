@@ -3,7 +3,7 @@
 //  RichTextKit
 
 //  Created by Daniel Saidi on 2022-06-04.
-//  Copyright © 2022-2023 Daniel Saidi. All rights reserved.
+//  Copyright © 2022-2024 Daniel Saidi. All rights reserved.
 //
 
 import SwiftUI
@@ -11,7 +11,7 @@ import SwiftUI
 /**
  This struct can be used to style rich text highlighting.
  */
-public struct RichTextHighlightingStyle: Equatable {
+public struct RichTextHighlightingStyle: Equatable, Hashable {
 
     /**
      Create a style instance.
@@ -37,11 +37,6 @@ public struct RichTextHighlightingStyle: Equatable {
 
 public extension RichTextHighlightingStyle {
 
-    /**
-     The standard rich text highlighting style, which uses a
-     clear background color and an accent foreground color.
-
-     You can override this value to change the global style.
-     */
-    static var standard = RichTextHighlightingStyle()
+    /// The standard rich text highlighting style.
+    static var standard: Self { .init() }
 }

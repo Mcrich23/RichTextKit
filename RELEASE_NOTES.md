@@ -6,9 +6,324 @@ Until then, minor updates may remove deprecated features and introduce breaking 
 
 
 
+## 1.2
+
+This version makes a first step towards removing library-specific types in favor of native types, to avoid having to add custom types and logic where native alternatives exist.
+
+This version starts with `NSParagraphStyle` and its nested types, and makes it possible to get, set, pick, step and toggle the following values with a single set of functions, pickers, steppers and toggles:
+
+`alignment`, `allowsDefaultTighteningForTruncation`, `baseWritingDirection`, `defaultTabInterval`, `firstLineHeadIndent`, `headIndent`, `hyphenationFactor`, `lineBreakMode`, `lineBreakStrategy`, `lineHeightMultiple`, `lineSpacing`, `maximumLineHeight`, `minimumLineHeight`, `paragraphSpacing`, `paragraphSpacingBefore`, `tabStops`, `tailIndent`, `usesDefaultHyphenation`.
+
+As a result, this version deprecates the `RichTextAlignment` and `RichTextLine` type. This makes the library tighter, and a lot more capable with less code that does more.
+
+### ✨ Features
+
+* `NSMutableParagraphStyle` has a new `defaultMutable` builder.
+* `NSParagraphStyle` has a new `defaultPickerValues(for:)` function.
+* `NSParagraphStyle` has a new `defaultStepperSteps(for:)` function.
+* `NSParagraphStyle.KeyPath` has a new `defaultIcon` image property.
+* `NSParagraphStyle.KeyPath` has a new `defaultPickerValues` property.
+* `NSParagraphStyle.KeyPath` has a new `defaultStepperInterval` property.
+* `NSTextAlignment` has a new `defaultIcon` image-building property.
+* `RichTextContext` has a new `paragraphStyleValue(for:)` function.
+* `RichTextContext` has a new `paragraphStyleValueBinding(for:)` function.
+* `RichTextViewComponent` has a new, keypath-based `richTextParagraphStyleValue(_:)`.
+* `RichTextViewComponent` has a new, keypath-based `setRichTextParagraphStyleValue(_:_:)`.
+* `RichTextViewComponent` has a new, keypath-based `stepRichTextParagraphStyleValue(_:_:)`.
+
+### 🏞️ Views
+
+* `Picker` has new paragraph style value-based initializers.
+* `Stepper` has new paragraph style value-based initializers.
+* `Toggle` has new paragraph style value-based initializers.
+
+### 🗑️ Deprecations 
+
+* `RichTextAlignment` and all nested types have been deprecated due to the new paragraph-based features.
+* `RichTextLine` and all nested types have been deprecated due to the new paragraph-based features.
+
+
+
+## 1.1.2
+
+Thanks to @cp-divyesh-v, and @bryan1anderson for your contributions to this version!
+
+### 💡 Adjustments
+
+* `RichKeyboardToolbar.Configuration` has a new format sheet button toggle. (@bryan1anderson)
+
+### 🐛 Bug Fixes
+
+* `RichTextCoordinator` now updates the current attributes if needed on macOS. (@cp-divyesh-v)
+
+
+
+
+## 1.1.1
+
+This release reverts the Swift 6 restriction.
+
+The library is still ready for Swift 6, but will not require it due to compatibility issues.
+
+This version lets you keep using RichTextKit with Xcode 15.
+
+
+
+## 1.1
+
+This release makes RichTextKit use Swift 6.
+
+This will involve a few breaking changes, but they are so minor that they (hopefully) didn't warrant a major version bump.
+
+Reach out if you think that this version changes too much for a minor bump, or if you see any Swift 6 changes you don't agree with.
+
+### ✨ Features
+
+* `RichTextAction` has a new `deleteSelectedText` action.
+* `RichTextAction` has a new `deleteText(at:)` action.
+* `RichTextAction` has a new `replaceSelectedText(with:)` action.
+* `RichTextAction` has a new `replaceText(at:with:)` action.
+* `RichTextView` has a new `deleteText(at:)` function.
+* `RichTextView.Configuration` has a new `isScrollBarsVisible` property for macOS.
+
+### 💡 Adjustments
+
+* Many protocols now use `@preconcurrency @MainActor`.
+* All mutable `Image` and `Color` extensions are now computed.
+* All standard style and configuration values are now computed.
+
+### 🐛 Bug Fixes
+
+* `RichTextView` only sets image configuration if it's not manually set before.  
+
+
+
+## 1.0
+
+This release removes all deprecated code and cleans up the library.
+
+### ✨ Features
+
+* There are new view style and config modifiers for components.
+
+* `RichTextFormat` is a new namespace with format types and views.
+* `RichTextContext` has more intuitive ways to paste text content.
+* `RichTextContext` has a new observable `paragraphStyle` property.
+* `RichTextInsertion` has new static convenience insertion builders.
+* `RichTextViewer` is a new SwiftUI view that can be used to view rich text.
+
+### 🐛 Bug Fixes
+
+* `RichTextView` no longer resets font and styles when setting up the macOS text view.
+
+### 💥 Breaking Changes
+
+* All previously deprecated code has been deleted. 
+* Many localization keys have been renamed to be easier to use.
+
+* `RichTextContextFocusedValueKey` is renamed to `RichTextContext.FocusedValueKey`.
+* `RichTextEditor` is now configured and styled with modifiers instead of the init.
+* `RichTextFont` pickers are now configured with a shared modifier instead of the init.
+* `RichTextFont` size picker is now configured with a shared modifier instead of the init.
+* `RichTextFormat` components are now configured with a shared modifier instead of the init.
+* `RichTextFormatSheet` has been renamed to `RichTextFormat.Sheet` to trim SDK surface area.
+* `RichTextFormatSidebar` has been renamed to `RichTextFormat.Sidebar` to trim SDK surface area.
+* `RichTextFormatToolbar` has been renamed to `RichTextFormat.Toolbar` to trim SDK surface area.
+* `RichTextLine.SpacingPicker` is now configured with a shared view modifier instead of the init.
+* `RichTextKeyboardToolbar` is now configured and styled with two view modifiers instead of the init.
+
+
+
+## 0.9.9
+
+This release adds a lot of new `RichTextAction` cases and adjusts the context and coordinator subscription.
+
+This release also deprecates `RichTextAttributeReader` and `RichTextAttributeWriter` functionality that are not used by the library, in favor of `RichTextViewComponent`, to reduce the complexity of the library. 
+
+Until now, these functions mostly did the same thing, but sometimes the `RichTextViewComponent` have to use its text storage or layout manager, or update the typing attributes. This caused the code to diverge and mostly identical copies had co-exist, where the reader and writer versions were not even used by the library.
+
+By deprecating these functions, we can simplify the library in 1.0, and focus more on unifying the different `RichTextViewComponent` implementations (`UITextView` in iOS and `NSTextView` in macOS), rather than providing a low level string handling interface.
+
+### ✨ Features
+
+* `FontRepresentable` has new extensions.
+* `RichTextAction` has a new `label` property.
+* `RichTextCommand.ActionButtonGroup` has new inits.
+* `RichTextCommand.FormatMenu` is a lot more configurable.
+* `RichTextFormatSheet` is now available on all platforms.
+* `RichTextFormatSheet` has new configuration and style types.
+* `RichTextFormatSidebar` has new configuration and style types.
+* `RichTextFormatToolbar` is a new rich text formatting toolbar.
+* `RichTextKeyboardToolbar` has a new config to always be shown.
+* `RichTextLine` is a new namespace with support for linespacing.
+* `RichTextStyle.Button` now supports using custom button styles.
+* `RichTextView` has a new theme that lets you define its style.
+* `RichTextViewComponent` has a new `hasRichTextStyle` function.
+* `RichTextViewComponent` has a new `toggleRichTextStyle` function.
+* `RichTextViewComponent` now handles superscript changes properly. 
+
+### 🚨 Important
+
+* `RichTextFormatToolbar` is no longer navigation wrapped by default.
+* `RichTextFormatToolbar` has a new `asSheet()` function that does this.
+
+### 💡 Adjustments
+
+* `RichTextColor` `icon` is no longer optional.
+* `RichTextColor` has a new `titleKey` property.
+* `RichTextContext` makes coordinator handle alignment.
+* `RichTextCoordinator` now syncs an extra time at ends editing.
+
+### 🐛 Bug Fixes
+
+* The library once again builds on visionOS.
+
+* `RichTextAlignment` now behaves better.
+* `RichTextAlignment.Picker` now uses provided values.
+* `RichTextCoordinator` now handles indentation changes.
+
+### 🗑️ Deprecations 
+
+* `RichTextAttributeReader` has deprecated a lot of functions.
+* `RichTextAttributeWriter` has deprecated a lot of functions.
+* `RichTextCommand.AlignmentOptionsGroup` has been deprecated.
+* `RichTextCommand.FontSizeOptionsGroup` has been deprecated.
+* `RichTextCommand.IndentOptionsGroup` has been deprecated.
+* `RichTextCommand.StyleOptionsGroup` has been deprecated.
+* `RichTextCommand.SuperscriptOptionsGroup` has been deprecated.
+* `RichTextContext` replaces individual colors with a single `colors`.
+* `RichTextContext` replaces individual styles with a single `styles`.
+* `RichTextContext` `userActionPublisher` is renamed to `actionPublisher`.
+* `RichTextCoordinator` functions calling `handle(_:)` have been deprecated.
+* `RichTextFormatSheet` has been renamed to `RichTextFormatToolbar`.
+* `RTKL10n.bundle` has been deprecated since we can use the `.module` bundle.
+
+### 💥 Breaking Changes
+
+* `RichTextColor.undefined` was no longer used and has been removed.
+
+
+
+## 0.9.8
+
+This release starts moving types and views that relate to other types into the type namespaces, to make the surface area of the library smaller.
+
+### ✨ Features
+
+* `RichTextAlignment.Picker` has a new style parameter.
+* `RichTextCommand` is a new namespace for command-related views.
+* `RichTextColor.Picker` now shows a quick button to reset the color. 
+* `RichTextLabelValue` is a new protocol that harmonizes label values.
+
+### 💡 Adjustments
+
+* Many value types implement `RichTextLabelValue` to get a `label` property.
+* All types that implement `RichTextLabelValue` get a `label` that has improved accessibility.
+
+* `RichTextColor` `.adjust` now takes an optional color.
+* `RichTextColor` `.allCases` no longer returns `undefined`.
+* `RichTextFormatSheet` no longer hard-codes an accent color.
+* `RichTextStyle` views no longer use a style - use `foregroundStyle`, `tint` and `accentColor` instead. 
+
+### 🐛 Bug Fixes
+
+* `Image.symbol(...)` removes `palette` rendering mode to fix incorrect color scheme behavior.
+* `RichTextAlignment.Picker` now hides its picker label.
+* `RichTextColor.Picker` no longer auto-adjusts black and white to make it possible to actually set those colors.
+
+### 🗑️ Deprecations 
+
+* `RichTextAction*` views have been renamed to `RichTextAction.Button*`.
+* `RichTextAlignment*` views have been renamed to `RichTextAlignment.*`.
+* `RichTextArgumentReader` deprecates the font name and size functions.
+* `RichTextArgumentWriter` deprecates the font name and size functions.
+* `RichTextColor*` views have been renamed to `RichTextColor.*`.
+* `RichTextCommand` views are now nested within the new `RichTextCommand` type.
+* `RichTextComponent` deprecates the font name and size functions.
+* `RichTextDataFormatMenu` has been renamed to `RichTextDataFormat.Menu`.
+* `RichTextFont*` views have been renamed to `RichTextFont.*`.
+* `RichTextStyle*` views have been renamed to `RichTextStyle.*`.
+
+
+
+## 0.9.7
+
+Thanks to [@ropellanda][ropellanda], RichTextKit now supports Vision OS.
+
+Thanks to [@screenworker][screenworker], RichTextEditor now has a `config` that can disable scrolling.
+
+### ✨ Features
+
+* `Image` has a new rich text-specific image builders.
+* `RichTextEditor` has a new `config` value parameter that can disable scrolling.
+* `RichTextView` has a new `configuration` property that can disable scrolling.
+
+### 🗑️ Deprecations 
+
+* `RichTextAction` static properties have been deprecated in favor of their corresponding functions.
+* `RichTextReader` `.richTextRange` has been renamed to `.richTextFullRange`.  
+
+### 🐛 Bug Fixes
+
+* `RichTextAction` corrects some icons and localized strings.
+* `RichTextAttributeReader` now use `range` correctly in `setRichTextSuperscriptLevel`.
+* `RichTextCoordinator` now sets correct `underline` color instead of `foreground` color.
+
+### 💥 Breaking Changes
+
+* `RichTextAttributeReader/Writer` functions now require a range.
+
+
+
+## 0.9.6
+
+Thanks to [@DominikBucher12][DominikBucher12], fonts and pasting images behave a lot better than before!
+
+### 💡 Adjustments
+              
+* `pasteImage(_:at:moveCursorToPastedContent:)` now uses `true` as default move parameter.
+
+
+
+## 0.9.5
+
+Thanks to [@DominikBucher12][DominikBucher12] and [@msrutek-paylocity][msrutek-paylocity], some bugs have been fixed and some formatting adjusted.
+
+### ✨ Features
+
+* `RichTextColor` has a new `attribute` property.
+* `RichTextColor` has a new `underline` color.
+* `RichTextFormatSheet` has a new `colorPickers` init parameter.
+* `RichTextFormatSidebar` has a new `colorPickers` init parameter.
+
+### 💡 Adjustments
+              
+* `RichTextAttributeReader` now allows providing a `nil` range.
+* `RichTextAttributeWriter` now handles `setRichTextStyle` with a switch.
+* `RichTextAttributeWriter` and `RichTextViewComponent` shares more code.
+* `RichTextFormatSheet` now exposes its init params as mutable properties.
+* `RichTextFormatSidebar` now handles keyboard focus way better than before.
+* `RichTextFormatSidebar` now exposes its init params as mutable properties.
+* `RichTextViewComponent` now handles `setCurrentRichTextStyle` with a switch.
+* `RichTextViewComponent` now handles `setCurrentRichTextStyle` with a switch.
+* `RichTextViewComponent` uses the new color `attribute` to optimize some code.
+* `SwiftFormat` now uses `consecutiveSpaces`.
+
+### 🐛 Bug Fixes
+                
+* `RichTextAttributeWriter` now handles `strikethrough` with a switch.
+* `RichTextView` now handles initial drag & drop better on iOS.
+    
+### 🗑️ Deprecations 
+
+* `RichTextAttributeReader` color functions are replaced with a single `richTextColor(_:at:)`.
+* `RichTextAttributeWriter` color functions are replaced with a single `setRichTextColor(_:to:at:)`.
+
+
+
 ## 0.9.4
 
-Thanks to [@Mcrich23](https://github.com/Mcrich23), the `RichTextColorPicker` now adjusts foreground and background color for the current color scheme.
+Thanks to [@Mcrich23][Mcrich23], the `RichTextColorPicker` now adjusts foreground and background color for the current color scheme.
 
 ### ✨ Features
 
@@ -22,12 +337,11 @@ Thanks to [@Mcrich23](https://github.com/Mcrich23), the `RichTextColorPicker` no
 * `RichTextColorPicker` now uses the color type color adjustment.
 
 
-
 ## 0.9.3
 
-Thanks to [@Mcrich23](https://github.com/Mcrich23), RichTextKit now supports Mac Catalyst.
+Thanks to [@Mcrich23][Mcrich23], RichTextKit now supports Mac Catalyst.
 
-Thanks to [@msrutek-paylocity](https://github.com/msrutek-paylocity) the unit tests are in a much better shape. 
+Thanks to [@msrutek-paylocity][msrutek-paylocity] the unit tests are in a much better shape. 
 
 
 
@@ -404,3 +718,10 @@ RichTextKit adds extensive support for a bunch of rich text features:
 * Sharing
 * Styles
 * Views
+
+
+[DominikBucher12]: https://github.com/DominikBucher12
+[Mcrich23]: https://github.com/Mcrich23
+[msrutek-paylocity]: https://github.com/msrutek-paylocity
+[ropellanda]: https://github.com/ropellanda
+[screenworker]: https://github.com/screenworker

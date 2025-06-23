@@ -22,7 +22,6 @@ final class RichTextStyleTests: XCTestCase {
         XCTAssertEqual(icon(for: .underlined), .richTextStyleUnderline)
     }
 
-
     #if canImport(UIKit)
     func traits(for style: RichTextStyle) -> UIFontDescriptor.SymbolicTraits? {
         style.symbolicTraits
@@ -33,7 +32,7 @@ final class RichTextStyleTests: XCTestCase {
         XCTAssertEqual(traits(for: .italic), .traitItalic)
         XCTAssertNil(traits(for: .underlined))
     }
-    #elseif os(macOS)
+    #elseif macOS
     func traits(for style: RichTextStyle) -> NSFontDescriptor.SymbolicTraits? {
         style.symbolicTraits
     }

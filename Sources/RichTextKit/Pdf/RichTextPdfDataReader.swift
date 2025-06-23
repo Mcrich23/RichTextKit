@@ -15,6 +15,7 @@ import Foundation
  The protocol is implemented by `NSAttributedString` as well
  as other types in the library.
  */
+@preconcurrency @MainActor
 public protocol RichTextPdfDataReader: RichTextReader {}
 
 extension NSAttributedString: RichTextPdfDataReader {}
@@ -29,9 +30,9 @@ public extension RichTextPdfDataReader {
      a ``PdfDataError/unsupportedPlatform`` error.
      */
     func richTextPdfData(configuration: PdfPageConfiguration = .standard) throws -> Data {
-        #if iOS
+        #if iOS || os(visionOS)
         try richText.iosPdfData(for: configuration)
-        #elseif os(macOS)
+        #elseif macOS
         try richText.macosPdfData(for: configuration)
         #else
         throw PdfDataError.unsupportedPlatform
@@ -42,6 +43,7 @@ public extension RichTextPdfDataReader {
 #if macOS
 import AppKit
 
+@MainActor
 private extension NSAttributedString {
 
     func macosPdfData(for configuration: PdfPageConfiguration) throws -> Data {
@@ -100,9 +102,10 @@ private extension NSAttributedString {
 }
 #endif
 
-#if iOS
+#if iOS || os(visionOS)
 import UIKit
 
+@MainActor
 private extension NSAttributedString {
 
     func iosPdfData(for configuration: PdfPageConfiguration) throws -> Data {
@@ -113,7 +116,7 @@ private extension NSAttributedString {
         let range = NSRange(location: 0, length: pageRenderer.numberOfPages)
         pageRenderer.prepare(forDrawingPages: range)
         let bounds = UIGraphicsGetPDFContextBounds()
-        for i in 0  ..< pageRenderer.numberOfPages {
+        for i in 0 ..< pageRenderer.numberOfPages {
             UIGraphicsBeginPDFPage()
             pageRenderer.drawPage(at: i, in: bounds)
         }

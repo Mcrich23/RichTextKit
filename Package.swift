@@ -1,4 +1,4 @@
-// swift-tools-version: 5.8
+// swift-tools-version: 5.9
 
 import PackageDescription
 
@@ -9,15 +9,20 @@ let package = Package(
         .iOS(.v15),
         .macOS(.v12),
         .tvOS(.v15),
-        .watchOS(.v8)
+        .watchOS(.v8),
+        .visionOS(.v1)
     ],
     products: [
         .library(
             name: "RichTextKit",
-            targets: ["RichTextKit"]),
+            targets: ["RichTextKit"]
+        )
     ],
     dependencies: [
-        .package(url: "https://github.com/danielsaidi/MockingKit.git", .upToNextMajor(from: "1.1.0"))
+        .package(
+            url: "https://github.com/danielsaidi/MockingKit.git",
+            .upToNextMajor(from: "1.5.0")
+        )
     ],
     targets: [
         .target(
@@ -26,11 +31,16 @@ let package = Package(
             resources: [.process("Resources")],
             swiftSettings: [
                 .define("macOS", .when(platforms: [.macOS])),
-                .define("iOS", .when(platforms: [.iOS, .macCatalyst])),
+                .define("iOS", .when(platforms: [.iOS, .macCatalyst]))
             ]
         ),
         .testTarget(
             name: "RichTextKitTests",
-            dependencies: ["RichTextKit", "MockingKit"]),
+            dependencies: ["RichTextKit", "MockingKit"],
+            swiftSettings: [
+                .define("macOS", .when(platforms: [.macOS])),
+                .define("iOS", .when(platforms: [.iOS, .macCatalyst]))
+            ]
+        )
     ]
 )

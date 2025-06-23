@@ -26,7 +26,7 @@ extension Double: StandardFontSizeProvider {}
 
 extension RichTextContext: StandardFontSizeProvider {}
 
-#if iOS || macOS || os(tvOS)
+#if iOS || macOS || os(tvOS) || os(visionOS)
 extension RichTextEditor: StandardFontSizeProvider {}
 
 extension RichTextView: StandardFontSizeProvider {}
@@ -34,19 +34,18 @@ extension RichTextView: StandardFontSizeProvider {}
 
 public extension StandardFontSizeProvider {
 
-    /**
-     The standard font size to use for rich text.
-
-     You can change this value to affect all types that make
-     use of this value.
-     */
+    /// The standard font size to use for rich text.
     static var standardRichTextFontSize: CGFloat {
-        get { StandardFontSizeProviderStorage.standardRichTextFontSize }
-        set { StandardFontSizeProviderStorage.standardRichTextFontSize = newValue }
+        get { StandardFontSizeProviderStorage.shared.richTextFontSize }
+        set { StandardFontSizeProviderStorage.shared.richTextFontSize = newValue }
     }
 }
 
-private class StandardFontSizeProviderStorage {
+private class StandardFontSizeProviderStorage: @unchecked Sendable {
 
-    static var standardRichTextFontSize: CGFloat = 16
+    private init() {}
+
+    static let shared = StandardFontSizeProviderStorage()
+
+    var richTextFontSize: CGFloat = 16
 }

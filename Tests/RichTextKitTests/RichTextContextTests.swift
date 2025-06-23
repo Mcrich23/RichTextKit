@@ -13,16 +13,18 @@ final class RichTextContextTests: XCTestCase {
 
     func testInitializerSetsDefaultValues() {
         let context = RichTextContext()
-        XCTAssertEqual(context.fontName, "")
+        let iosFontName = context.fontName == ".SFUI"
+        let macFontName = context.fontName == ".AppleSystemUIFont"
+        XCTAssertTrue(iosFontName || macFontName)
         XCTAssertEqual(context.fontSize, 16)
-        XCTAssertFalse(context.isBold)
-        XCTAssertFalse(context.isItalic)
-        XCTAssertFalse(context.isUnderlined)
+        XCTAssertFalse(context.hasStyle(.bold))
+        XCTAssertFalse(context.hasStyle(.italic))
+        XCTAssertFalse(context.hasStyle(.underlined))
+        XCTAssertFalse(context.hasStyle(.strikethrough))
         XCTAssertFalse(context.isEditingText)
         XCTAssertNil(context.highlightedRange)
         XCTAssertEqual(context.selectedRange.location, 0)
         XCTAssertEqual(context.selectedRange.length, 0)
-        XCTAssertEqual(context.textAlignment, .left)
     }
 
     func testHighlightingRangeSetsHighlightedRange() {
@@ -45,16 +47,5 @@ final class RichTextContextTests: XCTestCase {
         context.isEditingText = true
         context.stopEditingText()
         XCTAssertFalse(context.isEditingText)
-    }
-
-    func testTriggeringFontSizeTriggersSetsOropertiesToTrue() {
-        let context = RichTextContext()
-        let fontSize = context.fontSize
-        context.handle(.stepFontSize(points: -1))
-        XCTAssertNotEqual(context.fontSize, fontSize)
-        context.handle(.stepFontSize(points: 3))
-        XCTAssertNotEqual(context.fontSize, fontSize)
-        context.handle(.stepFontSize(points: -2))
-        XCTAssertEqual(context.fontSize, fontSize)
     }
 }

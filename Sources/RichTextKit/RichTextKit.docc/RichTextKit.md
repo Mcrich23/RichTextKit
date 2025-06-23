@@ -1,14 +1,17 @@
 # ``RichTextKit``
 
-RichTextKit helps you view and edit rich text in SwiftUI, UIKit and AppKit.
-
+RichTextKit lets you view and edit rich text in `Swift` and `SwiftUI` on all major Apple platforms.
 
 
 ## Overview
 
 ![RichTextKit logo](Logo.png)
 
-RichTextKit has a SwiftUI `RichTextEditor` that builds on a multi-platform `RichTextView` that supports text style (bold, italic, underline, strikethrough etc.), font, font sizes, text and background colors, text alignment, images etc.
+RichTextKit is a library that lets you view and edit rich text in Swift and SwiftUI, on all major Apple platforms.
+
+RichTextKit has a multi-platform SwiftUI ``RichTextEditor`` that can be added to any app. The editor supports text styles (bold, italic, underline, etc.), fonts, font sizes, colors, text alignments, image attachments, and much more.
+
+The ``RichTextEditor`` is powered by a multi-platform `RichTextView` that bridges `UITextView` and `NSTextView` and adds APIs to make them work more alike on all platforms.
 
 
 
@@ -20,25 +23,32 @@ RichTextKit can be installed with the Swift Package Manager:
 https://github.com/danielsaidi/RichTextKit.git
 ```
 
-If you prefer to not have external dependencies, you can also just copy the source code into your app.
+
+## Support My Work
+
+You can [become a sponsor][Sponsors] to help me dedicate more time on my various [open-source tools][OpenSource]. Every contribution, no matter the size, makes a real difference in keeping these tools free and actively developed.
 
 
 
 ## Getting started
 
-The <doc:Getting-Started> article helps you get started with RichTextKit.
+@Links(visualStyle: detailedGrid) {
+    
+    - <doc:Getting-Started-Article>
+    - <doc:Demo-Article>
+}
 
 
 
 ## Repository
 
-For more information, source code, etc., visit the [project repository][Repository].
+For more information, source code, etc., visit the [project repository](https://github.com/danielsaidi/RichTextKit).
 
 
 
 ## License
 
-RichTextKit is available under the MIT license. See the [LICENSE][License] file for more info.
+RichTextKit is available under the MIT license.
 
 
 
@@ -46,13 +56,20 @@ RichTextKit is available under the MIT license. See the [LICENSE][License] file 
 
 ### Getting Started
 
-- <doc:Getting-Started>
+- <doc:Getting-Started-Article>
+
+### Articles
+
+- <doc:Demo-Article>
+- <doc:Context-Article>
+- <doc:Format-Article>
+- <doc:Views-Article>
 
 ### Essentials
 
-- ``RichTextEditor``
-- ``RichTextView``
 - ``RichTextContext``
+- ``RichTextEditor``
+- ``RichTextViewer``
 
 ### Foundation
 
@@ -60,19 +77,12 @@ RichTextKit is available under the MIT license. See the [LICENSE][License] file 
 - ``RichTextPresenter``
 - ``RichTextReader``
 - ``RichTextWriter``
-- ``RichTextViewComponent``
 
 ### Actions
 
 - ``RichTextAction``
-- ``RichTextActionButton``
-- ``RichTextActionButtonGroup``
-- ``RichTextActionButtonStack``
-
-### Alignment
-
-- ``RichTextAlignment``
-- ``RichTextAlignmentPicker``
+- ``RichTextInsertable``
+- ``RichTextInsertion``
 
 ### Attributes
 
@@ -81,29 +91,31 @@ RichTextKit is available under the MIT license. See the [LICENSE][License] file 
 - ``RichTextAttributeReader``
 - ``RichTextAttributeWriter``
 
+### Bridging
+
+- ``RichTextView``
+- ``RichTextViewComponent``
+- ``RichTextViewRepresentable``
+
 ### Colors
 
 - ``ColorRepresentable``
 - ``RichTextColor``
-- ``RichTextColorPicker``
 
 ### Commands
 
-- ``RichTextCommandButton``
-- ``RichTextCommandButtonGroup``
-- ``RichTextCommandsAlignmentOptionsGroup``
-- ``RichTextCommandsIndentOptionsGroup``
-- ``RichTextCommandsFontSizeOptionsGroup``
-- ``RichTextCommandsStyleOptionsGroup``
-- ``RichTextFormatCommandMenu``
-- ``RichTextShareCommandMenu``
+- ``RichTextCommand``
 
 ### Data
 
 - ``RichTextDataError``
 - ``RichTextDataFormat``
-- ``RichTextDataFormatMenu``
 - ``RichTextDataReader``
+
+### Editor
+
+- ``RichTextEditorConfig``
+- ``RichTextEditorStyle``
 
 ### Export
 
@@ -114,27 +126,17 @@ RichTextKit is available under the MIT license. See the [LICENSE][License] file 
 - ``StandardRichTextExportService``
 - ``StandardRichTextExportUrlResolver``
 
-### Focus
-
-- ``RichTextContextFocusedValueKey``
-
 ### Fonts
 
 - ``FontRepresentable``
 - ``FontDescriptorRepresentable``
 - ``FontTraitsRepresentable``
+- ``RichTextFont``
 - ``StandardFontSizeProvider``
-- ``RichTextFontPicker``
-- ``RichTextFontPickerFont``
-- ``RichTextFontForEachPicker``
-- ``RichTextFontListPicker``
-- ``RichTextFontSizePicker``
-- ``RichTextFontSizePickerStack``
 
 ### Format
 
-- ``RichTextFormatSheet``
-- ``RichTextFormatSidebar``
+- ``RichTextFormat``
 
 ### Images
 
@@ -148,12 +150,17 @@ RichTextKit is available under the MIT license. See the [LICENSE][License] file 
 ### Keyboard
 
 - ``RichTextKeyboardToolbar``
+- ``RichTextKeyboardToolbarConfig``
 - ``RichTextKeyboardToolbarMenu``
 - ``RichTextKeyboardToolbarStyle``
 
 ### Localization
 
 - ``RTKL10n``
+
+### Paragraph
+
+- ``NSMutableParagraphStyleValueLabel``
 
 ### Pasteboard
 
@@ -177,12 +184,18 @@ RichTextKit is available under the MIT license. See the [LICENSE][License] file 
 
 - ``RichTextHighlightingStyle``
 - ``RichTextStyle``
-- ``RichTextStyleButton``
-- ``RichTextStyleToggle``
-- ``RichTextStyleToggleGroup``
-- ``RichTextStyleToggleStack``
+
+### Views
+
+- ``RichTextLabelValue``
 
 
+
+[Email]: mailto:daniel.saidi@gmail.com
+[Website]: https://danielsaidi.com
+[GitHub]: https://github.com/danielsaidi
+[OpenSource]: https://danielsaidi.com/opensource
+[Sponsors]: https://github.com/sponsors/danielsaidi
 
 [License]: https://github.com/danielsaidi/RichTextKit/blob/master/LICENSE
 [Repository]: https://github.com/danielsaidi/RichTextKit

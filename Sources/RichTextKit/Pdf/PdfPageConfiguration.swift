@@ -8,9 +8,7 @@
 
 import CoreGraphics
 
-/**
- This struct defines a page configuration for a PDF document.
- */
+/// This error can be thrown when creating PDF data.
 public struct PdfPageConfiguration: Equatable {
 
     /**
@@ -36,12 +34,8 @@ public struct PdfPageConfiguration: Equatable {
 
 public extension PdfPageConfiguration {
 
-    /**
-     The standard PDF page configuration.
-
-     You can override this value to change the global config.
-     */
-    static var standard = PdfPageConfiguration()
+    /// The standard PDF page configuration.
+    static var standard: Self { .init() }
 }
 
 public extension PdfPageConfiguration {

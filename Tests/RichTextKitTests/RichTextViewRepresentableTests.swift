@@ -42,13 +42,13 @@ final class RichTextViewComponentTests: XCTestCase {
         XCTAssertEqual(view.richText.string, "foo bar baz")
     }
 
-
     func testSettingUpWithEmptyTextWorks() {
         let string = NSAttributedString(string: "")
         view.setup(with: string, format: .rtf)
+        view.configuration = .standard
         XCTAssertEqual(view.richText.string, "")
         #if iOS || os(tvOS)
-        XCTAssertFalse(view.allowsEditingTextAttributes)
+        XCTAssertTrue(view.allowsEditingTextAttributes)
         XCTAssertEqual(view.autocapitalizationType, .sentences)
         #endif
         XCTAssertEqual(view.backgroundColor, .clear)
@@ -56,7 +56,7 @@ final class RichTextViewComponentTests: XCTestCase {
         #if iOS || os(tvOS)
         XCTAssertEqual(view.spellCheckingType, .no)
         XCTAssertEqual(view.textColor, .label)
-        #elseif os(macOS)
+        #elseif macOS
         XCTAssertEqual(view.textColor, .textColor)
         #endif
     }
@@ -64,18 +64,27 @@ final class RichTextViewComponentTests: XCTestCase {
     func testSettingUpWithNonEmptyTextWorks() {
         let string = NSAttributedString(string: "foo bar baz")
         view.setup(with: string, format: .rtf)
+        view.configuration = .standard
+        view.theme = .standard
         XCTAssertEqual(view.richText.string, "foo bar baz")
         #if iOS || os(tvOS)
-        XCTAssertFalse(view.allowsEditingTextAttributes)
+        XCTAssertTrue(view.allowsEditingTextAttributes)
         XCTAssertEqual(view.autocapitalizationType, .sentences)
         #endif
-        XCTAssertEqual(view.backgroundColor, .clear)
+        #if os(tvOS)
+        XCTAssertNotEqual(view.backgroundColor, .black)
+        #else
+        XCTAssertNotEqual(view.backgroundColor, .clear)
+        #endif
         XCTAssertEqual(view.contentCompressionResistancePriority(for: .horizontal), .defaultLow)
-        #if iOS || os(tvOS)
+        #if iOS
         XCTAssertEqual(view.spellCheckingType, .no)
-        XCTAssertEqual(view.textColor, nil)
-        #elseif os(macOS)
-        XCTAssertEqual(view.textColor, nil)
+        XCTAssertNil(view.textColor)
+        #elseif os(tvOS)
+        XCTAssertEqual(view.spellCheckingType, .no)
+        XCTAssertNotNil(view.textColor)
+        #elseif macOS
+        XCTAssertNil(view.textColor)
         #endif
     }
 }

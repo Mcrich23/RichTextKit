@@ -9,20 +9,28 @@
 "locale" = "en";
 
 "done" = "Done";
+"more" = "More";
 
 "font" = "Font";
 "fontSize" = "Font Size";
+"fontSizeIncrease" = "Larger";
+"fontSizeIncreaseDescription" = "Larger Text";
+"fontSizeDecrease" = "Smaller";
+"fontSizeDecreaseDescription" = "Smaller Text";
 
 "color" = "Color";
 "foregroundColor" = "Text Color";
 "backgroundColor" = "Background";
+"underlineColor" = "Underline Color";
+"strikethroughColor" = "Striketrough Color";
+"strokeColor" = "Stroke Color";
 
 "actionCopy" = "Copy";
+"actionDelete" = "Delete";
 "actionDismissKeyboard" = "Dismiss Keyboard";
-"actionFontSizeIncrease" = "Larger Text";
-"actionFontSizeDecrease" = "Smaller Text";
-"actionIndentIncrease" = "Increase Indent";
-"actionIndentDecrease" = "Decrease Indent";
+"actionPrint" = "Print";
+"actionReplace" = "Replace";
+
 "actionRedoLatestChange" = "Redo";
 "actionUndoLatestChange" = "Undo";
 
@@ -31,28 +39,47 @@
 "fileFormatRtf" = "Rich Text (.rtf)";
 "fileFormatTxt" = "Plain Text (.txt)";
 
+"indent" = "Indent";
+"indentIncrease" = "Increase";
+"indentIncreaseDescription" = "Increase Indent";
+"indentDecrease" = "Decrease";
+"indentDecreaseDescription" = "Decrease Indent";
+
+"lineSpacing" = "Line Spacing";
+"lineSpacingIncrease" = "Increase";
+"lineSpacingIncreaseDescription" = "Increase Line Spacing";
+"lineSpacingDecrease" = "Decrease";
+"lineSpacingDecreaseDescription" = "Decrease Line Spacing";
+
 "menuExport" = "Export";
 "menuExportAs" = "Export as...";
-"menuFont" = "Font";
-"menuFontSizeIncrease" = "Larger";
-"menuFontSizeDecrease" = "Smaller";
 "menuFormat" = "Format";
-"menuIndent" = "Indent";
-"menuIndentIncrease" = "Increase";
-"menuIndentDecrease" = "Decrease";
 "menuPrint" = "Print...";
 "menuSave" = "Save";
 "menuSaveAs" = "Save as...";
 "menuShare" = "Share";
 "menuShareAs" = "Share as...";
-"menuSuperscriptIncrease" = "Superscript";
-"menuSuperscriptDecrease" = "Subscript";
 "menuText" = "Text";
+
+"highlightedRange" = "Highlight Range";
+"highlightingStyle" = "Highlighting Style";
+
+"pasteImage" = "Paste Image";
+"pasteImages" = "Paste Images";
+"pasteText" = "Paste text";
+"selectRange" = "Select Range";
+"setAttributedString" = "Set attributed String";
 
 "styleBold" = "Bold";
 "styleItalic" = "Italic";
 "styleStrikethrough" = "Strikethrough";
 "styleUnderlined" = "Underline";
+
+"superscript" = "Superscript";
+"superscriptIncrease" = "Increase";
+"superscriptIncreaseDescription" = "Increase Superscript";
+"superscriptDecrease" = "Decrease";
+"superscriptDecreaseDescription" = "Decrease Superscript";
 
 "textAlignment" = "Text Alignment";
 "textAlignmentLeft" = "Left";

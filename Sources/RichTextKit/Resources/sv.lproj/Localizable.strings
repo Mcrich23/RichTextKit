@@ -9,20 +9,27 @@
 "locale" = "sv";
 
 "done" = "Klar";
+"more" = "Mer";
 
 "font" = "Typsnitt";
 "fontSize" = "Teckenstorlek";
+"fontSizeIncrease" = "Större";
+"fontSizeIncreaseDescription" = "Öka teckenstorlek";
+"fontSizeDecrease" = "Mindre";
+"fontSizeDecreaseDescription" = "Minska teckenstorlek";
 
 "color" = "Färg";
 "foregroundColor" = "Text";
 "backgroundColor" = "Bakgrund";
+"underlineColor" = "Underline Color";
+"strikethroughColor" = "Striketrough Color";
+"strokeColor" = "Stroke Color";
 
 "actionCopy" = "Kopiera";
+"actionDelete" = "Radera";
 "actionDismissKeyboard" = "Stäng tangentbordet";
-"actionFontSizeIncrease" = "Öka teckenstorlek";
-"actionFontSizeDecrease" = "Minska teckenstorlek";
-"actionIndentIncrease" = "Öka indrag";
-"actionIndentDecrease" = "Minska indrag";
+"actionPrint" = "Skriv ut";
+
 "actionRedoLatestChange" = "Gör om";
 "actionUndoLatestChange" = "Ångra";
 
@@ -31,28 +38,47 @@
 "fileFormatRtf" = "Formaterad Text (.rtf)";
 "fileFormatTxt" = "Ren Text (.txt)";
 
+"indent" = "Indrag";
+"indentIncrease" = "Öka";
+"indentIncreaseDescription" = "Öka indrag";
+"indentDecrease" = "Minska";
+"indentDecreaseDescription" = "Minska indrag";
+
+"lineSpacing" = "Radavstånd";
+"lineSpacingIncrease" = "Öka";
+"lineSpacingIncreaseDescription" = "Öka linjeavstånd";
+"lineSpacingDecrease" = "Minska";
+"lineSpacingDecreaseDescription" = "Minska linjeavstånd";
+
 "menuExport" = "Exportera";
 "menuExportAs" = "Exportera som...";
-"menuFont" = "Typsnitt";
-"menuFontSizeIncrease" = "Större";
-"menuFontSizeDecrease" = "Mindre";
 "menuFormat" = "Format";
-"menuIndent" = "Indrag";
-"menuIndentIncrease" = "Öka";
-"menuIndentDecrease" = "Minska";
 "menuPrint" = "Skriv ut...";
 "menuSave" = "Spara";
 "menuSaveAs" = "Spara som...";
 "menuShare" = "Dela";
 "menuShareAs" = "Dela som...";
-"menuSuperscriptIncrease" = "Superscript";
-"menuSuperscriptDecrease" = "Subscript";
 "menuText" = "Text";
+
+"highlightedRange" = "Highlight Range";
+"highlightingStyle" = "Highlighting Style";
+
+"pasteImage" = "Paste Image";
+"pasteImages" = "Paste Images";
+"pasteText" = "Paste text";
+"selectRange" = "Select Range";
+"setAttributedString" = "Set attributed String";
 
 "styleBold" = "Fet";
 "styleItalic" = "Kursiv";
 "styleStrikethrough" = "Genomstrykning";
 "styleUnderlined" = "Understrykning";
+
+"superscript" = "Baslinje";
+"superscriptIncrease" = "Öka";
+"superscriptIncreaseDescription" = "Öka baslinje";
+"superscriptDecrease" = "Minska";
+"superscriptDecreaseDescription" = "Minska baslinje";
 
 "textAlignment" = "Textjustering";
 "textAlignmentLeft" = "Vänsterjustera";

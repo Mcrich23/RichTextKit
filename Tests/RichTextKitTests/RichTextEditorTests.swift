@@ -11,6 +11,7 @@ import RichTextKit
 import SwiftUI
 import XCTest
 
+@MainActor
 final class RichTextEditorTests: XCTestCase {
 
     private var text: NSAttributedString!
@@ -51,7 +52,7 @@ final class RichTextEditorTests: XCTestCase {
         let coordinator = editor.makeCoordinator()
         XCTAssertEqual(coordinator.text.wrappedValue.string, text.string)
         XCTAssertTrue(coordinator.textView === editor.textView)
-        XCTAssertTrue(coordinator.richTextContext === context)
+        XCTAssertTrue(coordinator.context === context)
     }
 }
 #endif

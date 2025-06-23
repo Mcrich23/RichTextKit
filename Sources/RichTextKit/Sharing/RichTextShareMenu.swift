@@ -3,19 +3,17 @@
 //  RichTextKit
 //
 //  Created by Daniel Saidi on 2022-12-19.
-//  Copyright © 2022-2023 Daniel Saidi. All rights reserved.
+//  Copyright © 2022-2024 Daniel Saidi. All rights reserved.
 //
 
-#if iOS || macOS
+#if iOS || macOS || os(visionOS)
 import SwiftUI
 
 /**
- This menu can be used to trigger custom share actions for a
- list of ``RichTextDataFormat`` values.
+ This menu trigger share actions for ``RichTextDataFormat``s.
 
- This menu uses a ``RichTextDataFormatMenu`` that by default
- is configured for exporting. It has customizable actions to
- make it possible to use it in any custom way.
+ The menu wraps a ``RichTextDataFormat/Menu`` that is set up
+ for exporting, with customizable share actions.
 
  If you have a ``RichTextDataFormat`` value, you can use its
  ``RichTextDataFormat/convertibleFormats`` as init parameter
@@ -25,12 +23,12 @@ public struct RichTextShareMenu: View {
 
     public init(
         title: String = RTKL10n.menuShareAs.text,
-        icon: Image = .richTextActionShare,
+        icon: Image = .richTextShare,
         formats: [RichTextDataFormat] = RichTextDataFormat.libraryFormats,
         formatAction: @escaping (RichTextDataFormat) -> Void,
         pdfAction: (() -> Void)? = nil
     ) {
-        self.menu = RichTextDataFormatMenu(
+        self.menu = RichTextDataFormat.Menu(
             title: title,
             icon: icon,
             formats: formats,
@@ -39,22 +37,20 @@ public struct RichTextShareMenu: View {
         )
     }
 
-    private let menu: RichTextDataFormatMenu
+    private let menu: RichTextDataFormat.Menu
 
     public var body: some View {
         menu
     }
 }
 
-struct RichTextShareMenu_Previews: PreviewProvider {
+#Preview {
 
-    static var previews: some View {
-        VStack {
-            RichTextShareMenu(
-                formatAction: { _ in },
-                pdfAction: {}
-            )
-        }
+    VStack {
+        RichTextShareMenu(
+            formatAction: { _ in },
+            pdfAction: {}
+        )
     }
 }
 #endif

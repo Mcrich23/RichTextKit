@@ -3,16 +3,18 @@
 //  RichTextKit
 //
 //  Created by Daniel Saidi on 2022-12-08.
-//  Copyright © 2022-2023 Daniel Saidi. All rights reserved.
+//  Copyright © 2022-2024 Daniel Saidi. All rights reserved.
 //
 
 import SwiftUI
+import Combine
 
-/**
- This enum defines rich text actions that can be executed on
- a rich text editor.
- */
-public enum RichTextAction: Identifiable, Equatable {
+/// This enum defines rich text actions that can be executed
+/// on a rich text editor.
+///
+/// It's also a namespace for action-related types and views,
+/// like ``RichTextAction/Button``.
+public enum RichTextAction: Identifiable, Equatable, RichTextLabelValue {
 
     /// Copy the currently selected text, if any.
     case copy
@@ -20,20 +22,65 @@ public enum RichTextAction: Identifiable, Equatable {
     /// Dismiss any presented software keyboard.
     case dismissKeyboard
 
+    /// Delete the selected text.
+    case deleteSelectedText
+
+    /// Delete text in a certain range.
+    case deleteText(in: NSRange)
+
+    /// Paste a single image.
+    case pasteImage(RichTextInsertion<ImageRepresentable>)
+
+    /// Paste multiple images.
+    case pasteImages(RichTextInsertion<[ImageRepresentable]>)
+
+    /// Paste plain text.
+    case pasteText(RichTextInsertion<String>)
+
     /// A print command.
     case print
 
     /// Redo the latest undone change.
     case redoLatestChange
 
+    /// Replace the selected text.
+    case replaceSelectedText(with: NSAttributedString)
+
+    /// Replace text in a certain range.
+    case replaceText(in: NSRange, with: NSAttributedString)
+
+    /// Select a range.
+    case selectRange(NSRange)
+
     /// Set the text alignment.
-    case setAlignment(_ alignment: RichTextAlignment)
+    case setAlignment(_ alignment: NSTextAlignment)
+
+    /// Set the entire attributed string.
+    case setAttributedString(NSAttributedString)
+
+    // Change background color
+    case setColor(RichTextColor, ColorRepresentable)
+
+    // Highlighted renge
+    case setHighlightedRange(NSRange?)
+
+    // Change highlighting style
+    case setHighlightingStyle(RichTextHighlightingStyle)
+
+    /// Set a certain ``RichTextStyle``.
+    case setStyle(RichTextStyle, Bool)
 
     /// Step the font size.
     case stepFontSize(points: Int)
 
     /// Step the indent level.
     case stepIndent(points: CGFloat)
+
+    /// Step the line spacing.
+    case stepLineSpacing(points: CGFloat)
+
+    /// Set the current paragraph style.
+    case setParagraphStyle(_ style: NSMutableParagraphStyle)
 
     /// Step the superscript level.
     case stepSuperscript(steps: Int)
@@ -47,140 +94,120 @@ public enum RichTextAction: Identifiable, Equatable {
 
 public extension RichTextAction {
 
+    typealias Publisher = PassthroughSubject<Self, Never>
+
     /// The action's unique identifier.
     var id: String { title }
 
     /// The action's standard icon.
     var icon: Image {
         switch self {
-        case .copy: return .richTextActionCopy
-        case .dismissKeyboard: return .richTextActionDismissKeyboard
-        case .print: return .richTextActionExport
-        case .redoLatestChange: return .richTextActionRedo
-        case .setAlignment(let alignment): return alignment.icon
-        case .stepFontSize(let points):
-            return points < 0 ? .richTextFontSizeDecrease : .richTextFontSizeIncrease
-        case .stepIndent(let points):
-            return points < 0 ? .richTextIndentDecrease : .richTextIndentIncrease
-        case .stepSuperscript(let steps):
-            return steps < 0 ? .richTextSuperscriptDecrease : .richTextSuperscriptIncrease
-        case .toggleStyle(let style): return style.icon
-        case .undoLatestChange: return .richTextActionUndo
+        case .copy: .richTextCopy
+        case .deleteSelectedText: .richTextDelete
+        case .deleteText: .richTextDelete
+        case .dismissKeyboard: .richTextDismissKeyboard
+        case .pasteImage: .richTextDocuments
+        case .pasteImages: .richTextDocuments
+        case .pasteText: .richTextDocuments
+        case .print: .richTextPrint
+        case .redoLatestChange: .richTextRedo
+        case .replaceSelectedText: .richTextReplace
+        case .replaceText: .richTextReplace
+        case .selectRange: .richTextSelection
+        case .setAlignment(let val): val.defaultIcon
+        case .setAttributedString: .richTextDocument
+        case .setColor(let color, _): color.icon
+        case .setHighlightedRange: .richTextAlignmentCenter
+        case .setHighlightingStyle: .richTextAlignmentCenter
+        case .setParagraphStyle: .richTextAlignmentLeft
+        case .setStyle(let style, _): style.icon
+        case .stepFontSize(let val): .richTextStepFontSize(val)
+        case .stepIndent(let val): .richTextStepIndent(val)
+        case .stepLineSpacing(let val): .richTextStepLineSpacing(val)
+        case .stepSuperscript(let val): .richTextStepSuperscript(val)
+        case .toggleStyle(let val): val.icon
+        case .undoLatestChange: .richTextUndo
         }
+    }
+
+    /// The localized label to use for the action.
+    var label: some View {
+        icon.label(title)
     }
 
     /// The localized title to use in the main menu.
     var menuTitle: String {
+        menuTitleKey.text
+    }
+
+    /// The localized title key to use in the main menu.
+    var menuTitleKey: RTKL10n {
         switch self {
-        case .stepIndent(let points):
-            return (points < 0 ? RTKL10n.menuIndentDecrease : .menuIndentIncrease).text
-        default: return title
+        case .stepIndent(let points): .menuIndent(points)
+        default: titleKey
         }
     }
 
-    /// The localized title.
+    /// The localized action title.
     var title: String {
+        titleKey.text
+    }
+
+    /// The localized action title key.
+    var titleKey: RTKL10n {
         switch self {
-        case .copy: return RTKL10n.actionCopy.text
-        case .dismissKeyboard: return RTKL10n.actionDismissKeyboard.text
-        case .print: return RTKL10n.menuPrint.text
-        case .redoLatestChange: return RTKL10n.actionRedoLatestChange.text
-        case .setAlignment(let alignment): return alignment.title
-        case .stepFontSize(let points):
-            return (points < 0 ? RTKL10n.actionFontSizeDecrease : .actionFontSizeIncrease).text
-        case .stepIndent(let points):
-            return (points < 0 ? RTKL10n.actionIndentDecrease : .actionIndentIncrease).text
-        case .stepSuperscript(let steps):
-            return (steps < 0 ? RTKL10n.actionIndentDecrease : .actionIndentIncrease).text
-        case .toggleStyle(let style): return style.title
-        case .undoLatestChange: return RTKL10n.actionUndoLatestChange.text
+        case .copy: .actionCopy
+        case .deleteSelectedText: .actionDelete
+        case .deleteText: .actionDelete
+        case .dismissKeyboard: .actionDismissKeyboard
+        case .pasteImage: .pasteImage
+        case .pasteImages: .pasteImages
+        case .pasteText: .pasteText
+        case .print: .actionPrint
+        case .redoLatestChange: .actionRedoLatestChange
+        case .replaceSelectedText: .actionDelete
+        case .replaceText: .actionDelete
+        case .selectRange: .selectRange
+        case .setAlignment(let alignment): alignment.defaultTitleKey
+        case .setAttributedString: .setAttributedString
+        case .setColor(let color, _): color.titleKey
+        case .setHighlightedRange: .highlightedRange
+        case .setHighlightingStyle: .highlightingStyle
+        case .setParagraphStyle: .textAlignmentLeft
+        case .setStyle(let style, _): style.titleKey
+        case .stepFontSize(let points): .actionStepFontSize(points)
+        case .stepIndent(let points): .actionStepIndent(points)
+        case .stepLineSpacing(let points): .actionStepLineSpacing(points)
+        case .stepSuperscript(let steps): .actionStepSuperscript(steps)
+        case .toggleStyle(let style): style.titleKey
+        case .undoLatestChange: .actionUndoLatestChange
         }
     }
 }
 
-
 // MARK: - Aliases
 
 public extension RichTextAction {
-
-    /// A name alias for `.stepFontSize`.
-    static var increaseFontSize: RichTextAction {
-        increaseFontSize()
-    }
-
-    /// A name alias for `.stepFontSize`.
-    static func increaseFontSize(
-        points: UInt = 1
-    ) -> RichTextAction {
-        stepFontSize(points: Int(points))
-    }
-
-    /// A name alias for `.stepFontSize`.
-    static var decreaseFontSize: RichTextAction {
-        decreaseFontSize()
-    }
-
-    /// A name alias for `.stepFontSize(points: -1)`.
-    static func decreaseFontSize(
-        points: UInt = 1
-    ) -> RichTextAction {
-        stepFontSize(points: -Int(points))
-    }
-
-
-    /// A name alias for `.stepIndent`.
-    static var increaseIndent: RichTextAction {
-        increaseIndent()
-    }
-
-    /// A name alias for `.stepIndent`.
-    static func increaseIndent(
-        points: UInt = .defaultRichTextIntentStepSize
-    ) -> RichTextAction {
-        stepIndent(points: CGFloat(points))
-    }
-
-    /// A name alias for `.stepIndent`.
-    static var decreaseIndent: RichTextAction {
-        decreaseIndent()
-    }
-
-    /// A name alias for `.stepIndent(points: -1)`.
-    static func decreaseIndent(
-        points: UInt = .defaultRichTextIntentStepSize
-    ) -> RichTextAction {
-        stepIndent(points: -CGFloat(points))
-    }
-
-
-    /// A name alias for `.stepFontSize`.
-    static var increaseSuperscript: RichTextAction {
-        increaseFontSize()
-    }
-
-    /// A name alias for `.stepSuperscript`.
-    static func increaseSuperscript(
-        steps: UInt = 1
-    ) -> RichTextAction {
-        stepSuperscript(steps: Int(steps))
-    }
-
-    /// A name alias for `.stepSuperscript`.
-    static var decreaseSuperscript: RichTextAction {
-        decreaseSuperscript()
-    }
-
-    /// A name alias for `.stepSuperscript(steps: -1)`.
-    static func decreaseSuperscript(
-        steps: UInt = 1
-    ) -> RichTextAction {
-        stepSuperscript(steps: -Int(steps))
-    }
-
 
     /// A name alias for `.redoLatestChange`.
     static var redo: RichTextAction { .redoLatestChange }
 
     /// A name alias for `.undoLatestChange`.
     static var undo: RichTextAction { .undoLatestChange }
+}
+
+public extension CGFloat {
+
+    /// The default rich text indent step size.
+    static var defaultRichTextIntentStepSize: CGFloat {
+        30.0
+    }
+}
+
+public extension UInt {
+
+    /// The default rich text indent step size.
+    static var defaultRichTextIntentStepSize: UInt {
+        30
+    }
 }

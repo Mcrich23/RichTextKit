@@ -3,7 +3,7 @@
 //  RichTextKit
 //
 //  Created by Daniel Saidi on 2022-12-19.
-//  Copyright © 2022-2023 Daniel Saidi. All rights reserved.
+//  Copyright © 2022-2024 Daniel Saidi. All rights reserved.
 //
 
 import SwiftUI
@@ -12,11 +12,10 @@ import SwiftUI
  This macOS-specific share menu can be used to trigger share
  actions for a list of ``RichTextDataFormat`` values.
 
- The menu will iterate over a set of `NSSharingService`s for
- every provided format. When the user then selects a service
- for a certain format, the `formatAction` function is called,
- in which you should then generate a share file, then return
- the url to the file so that the service can share it.
+ The menu iterate over an `NSSharingService` for each format.
+ When the user selects a service for a format, `formatAction`
+ is called, in which you should generate a file, then return
+ the url to the file so the service can share it.
 
  If the url action returns `nil` instead of a valid url, the
  menu will abort the share operation.
@@ -26,7 +25,7 @@ public struct RichTextNSSharingMenu: View {
     #if macOS
     public init(
         title: String = RTKL10n.menuShareAs.text,
-        icon: Image = .richTextActionShare,
+        icon: Image = .richTextShare,
         formats: [RichTextDataFormat] = RichTextDataFormat.libraryFormats,
         formatAction: @escaping (RichTextDataFormat) -> URL?,
         pdfAction: (() -> URL?)? = nil
@@ -61,7 +60,7 @@ public struct RichTextNSSharingMenu: View {
                 )
             }
         } label: {
-            Label(title, icon)
+            icon.label(title)
         }
     }
     #else
@@ -93,7 +92,7 @@ private extension RichTextNSSharingMenu {
                 }
             }
         } label: {
-            Label(title, icon)
+            icon.label(title)
         }
     }
 
@@ -113,15 +112,13 @@ private extension RichTextNSSharingMenu {
     }
 }
 
-struct RichTextNSSharingMenu_Previews: PreviewProvider {
+#Preview {
 
-    static var previews: some View {
-        VStack {
-            RichTextNSSharingMenu(
-                formatAction: { _ in nil },
-                pdfAction: { nil }
-            )
-        }
+    VStack {
+        RichTextNSSharingMenu(
+            formatAction: { _ in nil },
+            pdfAction: { nil }
+        )
     }
 }
 #endif

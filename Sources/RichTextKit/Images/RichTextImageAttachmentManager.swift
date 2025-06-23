@@ -3,13 +3,13 @@
 //  RichTextKit
 //
 //  Created by Daniel Saidi on 2022-06-05.
-//  Copyright © 2022-2023 Daniel Saidi. All rights reserved.
+//  Copyright © 2022-2024 Daniel Saidi. All rights reserved.
 //
 
 import CoreGraphics
 import Foundation
 
-#if iOS || os(tvOS)
+#if iOS || os(tvOS) || os(visionOS)
 import UIKit
 #endif
 
@@ -21,8 +21,8 @@ import AppKit
  This protocol extends ``RichTextReader`` with functionality
  for handling image attachments.
 
- The protocol is implemented by `NSAttributedString` but can
- be implemented by any `RichTextReader`.
+ The protocol is implemented by `NSAttributedString` and can
+ be implemented by any `RichTextReader` as well.
  */
 public protocol RichTextImageAttachmentManager: RichTextReader {}
 
@@ -63,7 +63,7 @@ public extension RichTextImageAttachmentManager {
     }
 }
 
-#if iOS || macOS || os(tvOS)
+#if iOS || macOS || os(tvOS) || os(visionOS)
 public extension RichTextImageAttachmentManager {
 
     /**

@@ -3,7 +3,7 @@
 //  RichTextKit
 //
 //  Created by Daniel Saidi on 2021-12-06.
-//  Copyright © 2021 Daniel Saidi. All rights reserved.
+//  Copyright © 2021-2024 Daniel Saidi. All rights reserved.
 //
 
 import Foundation
@@ -14,6 +14,7 @@ import Foundation
 
  Share files are by default written to the app caches folder.
  */
+@preconcurrency @MainActor
 public class StandardRichTextShareService: RichTextShareService {
 
     /**

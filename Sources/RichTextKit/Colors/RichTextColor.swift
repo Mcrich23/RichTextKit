@@ -3,16 +3,12 @@
 //  RichTextKit
 //
 //  Created by Daniel Saidi on 2022-05-28.
-//  Copyright © 2022-2023 Daniel Saidi. All rights reserved.
+//  Copyright © 2022-2024 Daniel Saidi. All rights reserved.
 //
 
 import SwiftUI
 
-/**
- This enum defines supported rich text color types.
-
- The enum makes the colors identifiable and diffable.
- */
+/// This enum defines supported rich text color types.
 public enum RichTextColor: String, CaseIterable, Codable, Equatable, Identifiable {
 
     /// Foreground color.
@@ -27,45 +23,61 @@ public enum RichTextColor: String, CaseIterable, Codable, Equatable, Identifiabl
     /// Stroke color.
     case stroke
 
-    /// An undefined color type.
-    case undefined
+    /// Underline color.
+    case underline
 }
 
 public extension RichTextColor {
 
-    /// The unique ID of the alignment.
+    /// The unique color ID.
     var id: String { rawValue }
 
-    /// The standard icon to use for the alignment.
-    var icon: Image? {
+    /// The corresponding rich text attribute, if any.
+    var attribute: NSAttributedString.Key? {
         switch self {
-        case .foreground: return .richTextColorForeground
-        case .background: return .richTextColorBackground
-        case .strikethrough: return .richTextColorStrikethrough
-        case .stroke: return .richTextColorStroke
-        case .undefined: return nil
+        case .foreground: .foregroundColor
+        case .background: .backgroundColor
+        case .strikethrough: .strikethroughColor
+        case .stroke: .strokeColor
+        case .underline: .underlineColor
+        }
+    }
+
+    /// The standard icon to use for the color.
+    var icon: Image {
+        switch self {
+        case .foreground: .richTextColorForeground
+        case .background: .richTextColorBackground
+        case .strikethrough: .richTextColorStrikethrough
+        case .stroke: .richTextColorStroke
+        case .underline: .richTextColorUnderline
+        }
+    }
+
+    /// The localized color title key.
+    var titleKey: RTKL10n {
+        switch self {
+        case .foreground: .foregroundColor
+        case .background: .backgroundColor
+        case .strikethrough: .strikethroughColor
+        case .stroke: .strokeColor
+        case .underline: .underlineColor
         }
     }
 
     /// Adjust a `color` for a certain `colorScheme`.
     func adjust(
-        color: Color,
+        _ color: Color?,
         for scheme: ColorScheme
     ) -> Color {
         switch self {
-        case .background:
-            if (color == .black && scheme == .dark) || (color == .white && scheme == .light) {
-                return .clear
-            }
-            return color
-        case .foreground:
-            if (color == .white && scheme == .dark) || (color == .black && scheme == .light) {
-                return .primary
-            }
-            return color
-        case .strikethrough: return color
-        case .stroke: return color
-        case .undefined: return color
+        case .background: color ?? .clear
+        default: color ?? .primary
         }
     }
+}
+
+public extension Collection where Element == RichTextColor {
+
+    static var allCases: [RichTextColor] { Element.allCases }
 }
